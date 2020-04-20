@@ -25,6 +25,15 @@ const MovieService = {
                 .then(data => resolve(data));
 
         })
+    },
+    getOmdbMovieDetails: (movieId, movieName) => {
+        return new Promise((resolve, reject) => {
+            let movieUrl = `${Constants.OMDB_MOVIE_NAME}${movieId}/omdb/${movieName}`
+            fetch(movieUrl).then(res => res.json()).then(result => {
+
+                resolve(result)
+            })
+        })
     }
 
 }
@@ -53,9 +62,9 @@ const GenaralisedMovieObject = (movieData) => {
     else {
         return {};
     }
-
-
 }
+
+
 
 const getEnglishTranslation = (translations) => {
     let englishTranslation;
