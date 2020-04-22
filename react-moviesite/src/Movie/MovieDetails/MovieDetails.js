@@ -10,19 +10,15 @@ import './MovieDetails.css'
 
 const MovieDetails = ({ id }) => {
     const [movieDetails, setMovieDetails] = useState({});
-    const [omdbDetails, setOMDBDetails] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
 
     useEffect(() => {
         MovieService.getMoviesById(id)
             .then(result => {
-                MovieService.getOmdbMovieDetails(id, result.Name).then(res => {
-                    setMovieDetails(result);
-                    setOMDBDetails(res);
-                    setIsLoading(false);
-                })
-                
+                console.log('TMDB data retrived, calling OMDB')
+                setMovieDetails(result);
+                setIsLoading(false);
             })
 
 
@@ -33,7 +29,7 @@ const MovieDetails = ({ id }) => {
 
         <div className="main-grid">
             {(isLoading || movieDetails.lengh == 0) ? <Loader /> :
-                <Grid celled>
+                <Grid celled >
                     <Grid.Row>
                         <Grid.Column width={3}>
                             <MoviePosterDetailed
@@ -42,15 +38,15 @@ const MovieDetails = ({ id }) => {
                                 releasedDate={movieDetails.ReleaseDate.date}
                                 poster={movieDetails.Poster}
                                 genres={movieDetails.Genres}
-                                omdb = {omdbDetails} />
+                                omdb={movieDetails.Omdb} />
                         </Grid.Column>
                         <Grid.Column width={13}>
-                            <MovieSummary 
-                            id={id}
-                            overview={movieDetails.OverView}
-                            directors = {movieDetails.Directors}
-                            writers = {movieDetails.Writers}
-                            actors = {movieDetails.Actors}
+                            <MovieSummary
+                                id={id}
+                                overview={movieDetails.OverView}
+                                directors={movieDetails.Directors}
+                                writers={movieDetails.Writers}
+                                actors={movieDetails.Actors}
                             />
                         </Grid.Column>
                     </Grid.Row>

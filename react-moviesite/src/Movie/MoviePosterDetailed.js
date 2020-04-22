@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, Label, Image } from 'semantic-ui-react'
 
 
-const MoviePosterDetailed = ({ name, runtime, releasedDate, genres, poster, omdb }) => {
+const MoviePosterDetailed = ({ id, name, runtime, releasedDate, genres, poster, omdb, onClickParent }) => {
     const hours = Math.floor(runtime / 60)
     const minutes = runtime % 60
     const releaseYear = releasedDate.split('-')[0]
@@ -22,20 +22,21 @@ const MoviePosterDetailed = ({ name, runtime, releasedDate, genres, poster, omdb
     }
 
     return (
-        <Card raised='true'>
+        <Card onClick={() => onClickParent(id)} raised='true'>
             <Image src={poster} wrapped ui={false} />
             <Card.Content>
                 <Card.Header>{name}({releaseYear})</Card.Header>
                 <Card.Meta>
                     <span className='date'>{hours}hrs {minutes}mins</span>
-                    <Label as='a' image>
+                    {(omdb) ? <Label as='a' image>
                         {omdb.Rate}
-                    </Label>
+                    </Label> : ''}
                     <div>
                         IMDB Rating :
+                        {(omdb) ? 
                         <Label circular color={getColor(omdb.IMDB)}>
                             {omdb.IMDB}
-                        </Label>
+                        </Label> : '' }
                     </div>
 
                 </Card.Meta>
@@ -51,7 +52,6 @@ const MoviePosterDetailed = ({ name, runtime, releasedDate, genres, poster, omdb
 
 const getColor = (rat) => {
     let rating = parseFloat(rat);
-    debugger
     if (rating < 3.9) {
         return 'red'
     } else if (rating < 4.9) {
@@ -60,10 +60,10 @@ const getColor = (rat) => {
         return 'yellow'
     }
     else if (rating < 7.9) {
-        return 'green'
+        return 'olive'
     }
     else {
-        return 'teal'
+        return 'green'
     }
 }
 

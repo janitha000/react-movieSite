@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Accordion, Icon, Header, Container, Divider, Label } from 'semantic-ui-react'
+import { Accordion, Icon, Card, Container, Divider, Label } from 'semantic-ui-react'
 import Actors from './Actors/Actors'
 import * as Constants from '../Util/Constants'
 import MovieService from './MovieService'
@@ -71,67 +71,82 @@ const MovieSummary = ({ id, overview, directors, actors, writers }) => {
     return (
         <div>
             <Container >
-                <Header size='medium'>Summary</Header>
-                <p>{overview}</p>
-                <Divider />
-                <span><p>Directors <Directors /></p></span>
-                <span><p>Writers <Writers /></p></span>
+                <Card fluid>
+                    <Card.Content>
+                        <Card.Header>Summary</Card.Header>
+                        <Card.Meta>
+                            <p>{overview}</p>
+                            <Divider />
+                            <p>Directors <Directors /></p>
+                            <span><p>Writers <Writers /></p></span>
+                        </Card.Meta>
+                    </Card.Content>
 
-                <Divider />
-                {(isLoading || keyPhrases.lengh == 0) ? <Loader /> : <KeyPhrases keyPhrases={keyPhrases} />}
-                <Divider />
-                <Accordion fluid styled>
-                    <Accordion.Title
-                        active={activeIndex === 0}
-                        index={0}
-                        onClick={handleClick}
-                    >
-                        <Icon name='dropdown' />
+                </Card>
+
+                {(isLoading || keyPhrases.lengh == 0) ? <Loader /> :
+                    <Card fluid>
+                        <Card.Content>
+                            <Card.Meta>
+                                <KeyPhrases keyPhrases={keyPhrases} />
+
+                    </Card.Meta>
+                        </Card.Content>
+
+                    </Card>
+                    }
+                    <Accordion fluid styled>
+                        <Accordion.Title
+                            active={activeIndex === 0}
+                            index={0}
+                            onClick={handleClick}
+                        >
+                            <Icon name='dropdown' />
                      Actors
                     </Accordion.Title>
-                    <Accordion.Content active={activeIndex === 0}>
-                        <div className='actors'> <ActorsPage /></div>
+                        <Accordion.Content active={activeIndex === 0}>
+                            <div className='actors'> <ActorsPage /></div>
 
-                    </Accordion.Content>
+                        </Accordion.Content>
 
-                    <Accordion.Title
-                        active={activeIndex === 1}
-                        index={1}
-                        onClick={handleClick}
-                    >
-                        <Icon name='dropdown' />
+                        <Accordion.Title
+                            active={activeIndex === 1}
+                            index={1}
+                            onClick={handleClick}
+                        >
+                            <Icon name='dropdown' />
   What kinds of dogs are there?
 </Accordion.Title>
-                    <Accordion.Content active={activeIndex === 1}>
-                        <p>
-                            There are many breeds of dogs. Each breed varies in size and
-                            temperament. Owners often select a breed of dog that they find to be
-                            compatible with their own lifestyle and desires from a companion.
+                        <Accordion.Content active={activeIndex === 1}>
+                            <p>
+                                There are many breeds of dogs. Each breed varies in size and
+                                temperament. Owners often select a breed of dog that they find to be
+                                compatible with their own lifestyle and desires from a companion.
   </p>
-                    </Accordion.Content>
+                        </Accordion.Content>
 
-                    <Accordion.Title
-                        active={activeIndex === 2}
-                        index={2}
-                        onClick={handleClick}
-                    >
-                        <Icon name='dropdown' />
+                        <Accordion.Title
+                            active={activeIndex === 2}
+                            index={2}
+                            onClick={handleClick}
+                        >
+                            <Icon name='dropdown' />
   How do you acquire a dog?
 </Accordion.Title>
-                    <Accordion.Content active={activeIndex === 2}>
-                        <p>
-                            Three common ways for a prospective owner to acquire a dog is from
-                            pet shops, private owners, or shelters.
+                        <Accordion.Content active={activeIndex === 2}>
+                            <p>
+                                Three common ways for a prospective owner to acquire a dog is from
+                                pet shops, private owners, or shelters.
   </p>
-                        <p>
-                            A pet shop may be the most convenient way to buy a dog. Buying a dog
-                            from a private owner allows you to assess the pedigree and
-                            upbringing of your dog before choosing to take it home. Lastly,
-                            finding your dog from a shelter, helps give a good home to a dog who
-                            may not find one so readily.
+                            <p>
+                                A pet shop may be the most convenient way to buy a dog. Buying a dog
+                                from a private owner allows you to assess the pedigree and
+                                upbringing of your dog before choosing to take it home. Lastly,
+                                finding your dog from a shelter, helps give a good home to a dog who
+                                may not find one so readily.
   </p>
-                    </Accordion.Content>
-                </Accordion>
+                        </Accordion.Content>
+                    </Accordion>
             </Container>
 
         </div>

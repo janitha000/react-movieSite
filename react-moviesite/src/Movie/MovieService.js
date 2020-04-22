@@ -6,11 +6,28 @@ const MovieService = {
         return new Promise((resolve, reject) => {
             let movieUrl = `${Constants.GET_MOVIE_BY_ID}${movieId}`
             fetch(movieUrl).then(res => res.json()).then(result => {
-                let movieObject = GenaralisedMovieObject(result);
+                let movieObject = GenaralisedMovieObject(result.data);
                 resolve(movieObject)
             })
         })
 
+    },
+    getMovieList: () => {
+        return new Promise((resolve, reject) => {
+            let movieUrl = `${Constants.GET_MOVIE_BY_ID}`
+            fetch(movieUrl).then(res => res.json()).then(result => {
+                let movies = [];
+                if (result.Items) {
+                    result.Items.forEach(function (movie) {
+                        let movieObject = GenaralisedMovieObject(movie);
+                        movies.push(movieObject);
+
+                    });
+                    resolve(movies)
+                }
+
+            })
+        })
     },
     getKeyPhrases: (movieId, text) => {
         return new Promise((resolve, reject) => {
@@ -40,12 +57,13 @@ const MovieService = {
 
 const GenaralisedMovieObject = (movieData) => {
     if (movieData) {
-        let data = movieData.data;
+        let data = movieData;
 
         let englishTranslation = getEnglishTranslation(data.translations);
         let poster = getMoviePoster(data.artworks)
 
         let movie = {
+            id: data.id,
             Name: englishTranslation.name,
             OverView: englishTranslation.overview,
             RunTime: data.runtime,
@@ -54,7 +72,8 @@ const GenaralisedMovieObject = (movieData) => {
             Poster: `${Constants.MOVIE_POSTER_HOME}${poster}`,
             Actors: data.people.actors,
             Directors: data.people.directors,
-            Writers: data.people.writers
+            Writers: data.people.writers,
+            Omdb: data.omdbData
         }
 
         return movie;
