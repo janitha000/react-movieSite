@@ -8,17 +8,26 @@ import './MovieDetails.css'
 
 
 
-const MovieDetails = ({ id }) => {
+const MovieDetails = (props) => {
+    let id = props.match.params.id;
     const [movieDetails, setMovieDetails] = useState({});
     const [isLoading, setIsLoading] = useState(true);
+    const [isError, setIsError] = useState(false);
 
 
     useEffect(() => {
         MovieService.getMoviesById(id)
             .then(result => {
+                debugger
+                if(result.Error){
+                    console.log('Error set')
+                    setIsError(true);
+                }
                 console.log('TMDB data retrived, calling OMDB')
                 setMovieDetails(result);
                 setIsLoading(false);
+            }).catch(err => {
+                console.log(err);
             })
 
 

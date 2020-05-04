@@ -5,10 +5,23 @@ const MovieService = {
     getMoviesById: (movieId) => {
         return new Promise((resolve, reject) => {
             let movieUrl = `${Constants.GET_MOVIE_BY_ID}${movieId}`
-            fetch(movieUrl).then(res => res.json()).then(result => {
-                let movieObject = GenaralisedMovieObject(result.data);
-                resolve(movieObject)
-            })
+            let accesstoken = localStorage.getItem('access_token')
+            fetch(movieUrl, {headers: {
+                'Authorization': `bearer ${accesstoken}`
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+              }})
+                .then(res =>  res.json())
+                .then(result => {
+                    let movieObject = {};
+                    if (result) {
+                        movieObject = GenaralisedMovieObject(result.data);
+
+                    }
+                    resolve(movieObject)
+                }).catch(err => {
+                    console.log(err);
+                    return({ "Error" : err})
+                })
         })
 
     },
