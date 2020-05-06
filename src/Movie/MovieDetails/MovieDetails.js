@@ -18,7 +18,7 @@ const MovieDetails = (props) => {
     useEffect(() => {
         MovieService.getMoviesById(id)
             .then(result => {
-                debugger
+                
                 if(result.Error){
                     console.log('Error set')
                     setIsError(true);

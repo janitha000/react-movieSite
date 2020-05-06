@@ -34,7 +34,7 @@ const CountryCumTotal = ({ countryData }) => {
             ]
         };
         let countryData = items;
-        debugger
+        
         countryData.forEach(element => {
             data.labels.push(element.Date);
             data.datasets[0].data.push(element.Cases)

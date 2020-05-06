@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import CovidService from './CovidService'
-import HorizontalBar from './Charts/HorizantalBar'
+import CovidService from '../CovidService'
+import HorizontalBar from '../Charts/HorizantalBar'
 import { Icon, Table, Grid } from 'semantic-ui-react'
+import SummaryCard from './SummaryCard'
 
 
 const CovidSummary = () => {
     const [covidSummary, setCovidSummary] = useState({})
     const [isLoading, setIsLoading] = useState(true);
+    const [globalData, setGlobalData] = useState({});
+
 
 
     useEffect(() => {
@@ -64,10 +67,15 @@ const CovidSummary = () => {
     }
 
     const TableData = () => {
+
         let tableRows = [];
         if (covidSummary) {
+            
+            setGlobalData(covidSummary.Global)
             let countries = covidSummary.Countries;
             countries.forEach(data => {
+
+
                 tableRows.push(<Table.Row>
                     <Table.Cell>{data.Country}</Table.Cell>
                     {(data.NewConfirmed > 1000)
@@ -83,6 +91,8 @@ const CovidSummary = () => {
                     }
 
                 </Table.Row>)
+
+
             });
         }
 
@@ -108,22 +118,39 @@ const CovidSummary = () => {
                 </Table.Body>
             </Table>
 
-        return (table);
+        return (<div style={{ marginLeft: '15px', marginBottom: '15px', marginTop: '15px', marginRight: '15px' }}>{table}</div>);
+    }
+
+    const SummaryCardData = () => {
+        let data = (globalData.NewConfirmed != undefined)
+            ? <div style={{ marginTop: '15px' }}>
+                <SummaryCard label={'Total Confirmed'} value={globalData.TotalConfirmed} />
+                <SummaryCard label={'Total Deaths'} value={globalData.TotalDeaths} />
+                <SummaryCard label={'Total Recovered'} value={globalData.TotalRecovered} />
+            </div>
+            : 'Loading'
+
+        return data;
     }
 
     return (
         //    <Chart />
         <Grid>
-            <Grid.Row>
-                <Grid.Column width={8}>
-                    <CovidTable />
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row>
-                <Grid.Column width={8}>
+            <Grid.Column width={8}>
+                <CovidTable />
+            </Grid.Column>
+            <Grid.Column width={8}>
+                <Grid.Row >
+                    <Grid.Column width={2} >
+                        <SummaryCardData />
+               </Grid.Column>
+
+                    <Grid.Column width={2} >
 
                 </Grid.Column>
-            </Grid.Row>
+                </Grid.Row>
+
+            </Grid.Column>
         </Grid>
 
     )

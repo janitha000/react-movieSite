@@ -1,5 +1,5 @@
 import React from 'react'
-import CovidSummary from './CovidSummary'
+import CovidSummary from './Summary/CovidSummary'
 
 const CovidHome = () => {
     return(
