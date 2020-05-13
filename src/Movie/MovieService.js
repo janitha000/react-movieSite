@@ -6,21 +6,21 @@ const MovieService = {
         return new Promise((resolve, reject) => {
             let movieUrl = `${Constants.GET_MOVIE_BY_ID}${movieId}`
             let accesstoken = localStorage.getItem('access_token')
-            fetch(movieUrl, {headers: {
-                'Authorization': `bearer ${accesstoken}`
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-              }})
-                .then(res =>  res.json())
+            fetch(movieUrl, {
+                headers: {
+                    'Authorization': `bearer ${accesstoken}`
+                }
+            })
+                .then(res => res.json())
                 .then(result => {
                     let movieObject = {};
                     if (result) {
                         movieObject = GenaralisedMovieObject(result.data);
-
                     }
                     resolve(movieObject)
                 }).catch(err => {
                     console.log(err);
-                    return({ "Error" : err})
+                    return ({ "Error": err })
                 })
         })
 
@@ -62,6 +62,19 @@ const MovieService = {
             fetch(movieUrl).then(res => res.json()).then(result => {
 
                 resolve(result)
+            })
+        })
+    },
+    AddMovie: (movieId) => {
+        return new Promise((resolve, reject) => {
+            let AddMovieUrl = `${Constants.ADD_MOVIE}/${movieId}`
+            fetch(AddMovieUrl).then(res => res.json()).then(result => {
+
+                let movieObject = {};
+                if (result) {
+                    movieObject = GenaralisedMovieObject(result.data);
+                }
+                resolve(movieObject)
             })
         })
     }

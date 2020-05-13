@@ -1,22 +1,34 @@
 import auth0 from 'auth0-js'
 import { useHistory } from "react-router-dom";
+import * as Auth0 from '../Secrets/auth0'
 
 import { UseAuth } from '../Contexts/Auth-Context'
 
-
+console.log(process.env.REACT_APP_AUTH0_DOMAIN)
 
 let auth0Client = new auth0.WebAuth({
-
+    domain: Auth0.Domain,
+    clientID: Auth0.ClientID,
+    redirectUri: Auth0.RedirectUri,
+    audience: Auth0.Audience,
+    responseType: 'token id_token',
+    scope: 'openid profile'
 })
 
 
 
 export const Login = () => {
+    let accessToken = localStorage.getItem('access_token');
+    if (accessToken) {
+
+    }
+
     auth0Client.authorize();
 }
 
+
 export const HandleAuthentication = () => {
-    const {setAuthenticated, setAuthProfile} = UseAuth()
+    const { setAuthenticated, setAuthProfile } = UseAuth()
 
     // const [isAuthenticated, setIsAuthenticated] = UseAuth();
     // const [profile, setProfile] = UseAuth();
@@ -28,7 +40,7 @@ export const HandleAuthentication = () => {
         if (authResult && authResult.accessToken && authResult.idToken) {
             auth0Client.client.userInfo(authResult.accessToken, (err, profile) => {
                 if (profile) {
-                    debugger
+
                     setAuthProfile(profile)
                     setSession(authResult);
                     setAuthenticated(true)
@@ -44,7 +56,7 @@ export const HandleAuthentication = () => {
 }
 
 export const Logout = () => {
-    const {setAuthenticated} = UseAuth()
+    const { setAuthenticated } = UseAuth()
     let history = useHistory();
     removeSession();
     setAuthenticated(false);
